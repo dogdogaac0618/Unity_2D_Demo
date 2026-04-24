@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Settings")]
-    public float moveSpeed = 5f;
+    public float moveSpeed = 6f;
 
     [Header("Dash Settings")]
     public float dashSpeed = 12f;
