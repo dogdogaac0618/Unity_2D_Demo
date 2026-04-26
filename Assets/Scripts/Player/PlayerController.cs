@@ -1,15 +1,15 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Move Settings")]
-    public float moveSpeed = 6f;
+    
+    [SerializeField]private float moveSpeed = 6f;
 
     [Header("Dash Settings")]
-    public float dashSpeed = 12f;
-    public float dashDuration = 0.15f;
-    public float dashCooldown = 0.1f;
+    [SerializeField] private float dashSpeed = 12f;
+    [SerializeField] private float dashDuration = 0.15f;
+    [SerializeField] private float dashCooldown = 0.1f;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;

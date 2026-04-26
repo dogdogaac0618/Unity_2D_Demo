@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Overrider : MonoBehaviour
+public class Overrideratk : MonoBehaviour
 {
     [SerializeField] private float coreOffsetx;
     [SerializeField] private float coreOffsety;
-    private GameObject bullet1;
+    public GameObject bullet1;
 
     private Vector2 coreOffset;
     private Vector2 fireDir;
     private BoxCollider2D box;
     private void Start()
     {
-        
+        box = GetComponent<BoxCollider2D>();
     }
     private void Update()
     {
