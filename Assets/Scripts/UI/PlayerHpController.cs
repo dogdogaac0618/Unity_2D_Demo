@@ -20,14 +20,14 @@ public class PlayerHpController : MonoBehaviour
     {
         rectHpBar = HpBar.GetComponent<RectTransform>();
         rectDelayBar = DelayBar.GetComponent<RectTransform>();
-        UpdateHp(50,100,50);
+        
     }
     //更新血量
-    void UpdateHp(int currentHp, int maxHp,int damge)
+    public void UpdateHp(int currentHp, int maxHp,int damge)
     {   
         currentHp = Mathf.Clamp(currentHp, 0, maxHp);
         //记录受伤前的血量宽度，用于延迟血条的动画
-        previousWidth = rectDelayBar.sizeDelta.x;
+        previousWidth = rectHpBar.sizeDelta.x;
 
         //更新血条Hp
         //计算血条宽度，当前血量占最大血量的比例乘以满血时的宽度
@@ -50,7 +50,7 @@ public class PlayerHpController : MonoBehaviour
             t += Time.deltaTime;
             progress = Mathf.Clamp01(t / reduceDuration); // 将t归一化到0-1之间
             // 线性插值计算当前宽度
-            targetWidth = Mathf.Lerp(previousWidth, (float)currentHp / 100 * maxHpRealWidth, progress);
+            targetWidth = Mathf.Lerp(previousWidth, (float)currentHp / maxHpRealWidth * maxHpRealWidth, progress);
             rectDelayBar.sizeDelta = new Vector2(targetWidth, rectDelayBar.sizeDelta.y);
             yield return null;
         }
