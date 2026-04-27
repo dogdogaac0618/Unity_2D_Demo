@@ -16,7 +16,9 @@ public class PlayerHpController : MonoBehaviour
 
     //受伤之前的血量宽度
     private float previousWidth;
-    void Start()
+
+    private Coroutine delayCoroutine;
+    void Awake()
     {
         rectHpBar = HpBar.GetComponent<RectTransform>();
         rectDelayBar = DelayBar.GetComponent<RectTransform>();
@@ -35,7 +37,11 @@ public class PlayerHpController : MonoBehaviour
         rectHpBar.sizeDelta = new Vector2(width, rectHpBar.sizeDelta.y);
         
         //开始更新延迟血条的协程
-        StartCoroutine(UpdateDelayHpBar(previousWidth,currentHp));
+        if( delayCoroutine != null)
+        {
+            StopCoroutine(delayCoroutine);
+        }
+        delayCoroutine = StartCoroutine(UpdateDelayHpBar(previousWidth,currentHp));
     }
     //更新延迟血量
     IEnumerator UpdateDelayHpBar(float previousWidth,int currentHp)
@@ -50,7 +56,7 @@ public class PlayerHpController : MonoBehaviour
             t += Time.deltaTime;
             progress = Mathf.Clamp01(t / reduceDuration); // 将t归一化到0-1之间
             // 线性插值计算当前宽度
-            targetWidth = Mathf.Lerp(previousWidth, (float)currentHp / maxHpRealWidth * maxHpRealWidth, progress);
+            targetWidth = Mathf.Lerp(previousWidth, (float)currentHp, progress);
             rectDelayBar.sizeDelta = new Vector2(targetWidth, rectDelayBar.sizeDelta.y);
             yield return null;
         }
