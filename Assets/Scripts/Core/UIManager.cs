@@ -30,6 +30,15 @@ public class UIManager : MonoBehaviour
         playerHealth.OnHpChanged += UpdatePlayerHp;
     }
 
+    private void Start()
+    {
+        // 为什么 Start 里要主动刷新一次：
+        // Health 在 Awake 里可能已经触发过 OnHpChanged，
+        // 但 UIManager 那时候可能还没有完成订阅。
+        // 所以这里主动用当前血量刷新一次 UI，避免血条开局显示不对。
+        RefreshPlayerHp();
+    }
+
     private void OnDisable()
     {
         // 取消监听玩家血量变化事件
@@ -39,6 +48,13 @@ public class UIManager : MonoBehaviour
     {
         Debug.Log("UIManager Init");
 
+    }
+    /// <summary>
+    /// 主动刷新玩家血条
+    /// </summary>
+    public void RefreshPlayerHp()
+    {
+        playerHpController.UpdateHp(playerHealth.CurrentHp, playerHealth.MaxHp,0);
     }
     /// <summary>
     /// 更新玩家的血条

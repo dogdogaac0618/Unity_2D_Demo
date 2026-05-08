@@ -1,9 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// 玩家移动控制器
+/// 
+/// 当前职责：
+/// 1. 根据 PlayerInputReader 提供的移动输入控制玩家移动
+/// 2. 记录玩家最后一次移动方向
+/// 3. 处理玩家冲刺
+/// 
+/// 注意：
+/// 这个脚本不直接读取键盘按键。
+/// 按键输入统一交给 PlayerInputReader。
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
-    
+    [Header("Move Setting")]
     [SerializeField]private float moveSpeed = 6f;
 
     [Header("Dash Settings")]
@@ -13,8 +25,8 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private PlayerInputReader inputReader;
 
-    private Vector2 input;
     private Vector2 moveDir;
     private Vector2 lastMoveDir = Vector2.right;
     public Vector2 LastMoveDir => lastMoveDir;
@@ -28,6 +40,7 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        inputReader = GetComponent<PlayerInputReader>();
 
         if (sr != null)
         {
@@ -37,31 +50,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!isDashing)
-        {
-            input.x = Input.GetAxisRaw("Horizontal");
-            input.y = Input.GetAxisRaw("Vertical");
-
-            moveDir = input.normalized;
-
-            if (moveDir != Vector2.zero)
-            {
-                lastMoveDir = moveDir;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && canDash)
-        {
-            StartCoroutine(Dash());
-        }
+        UpdateMoveDirection();
+        HandleDashInput();
     }
 
     private void FixedUpdate()
     {
-        if (!isDashing)
-        {
-            rb.velocity = moveDir * moveSpeed;
-        }
+        Move();
     }
 
     private IEnumerator Dash()
@@ -89,5 +84,47 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(dashCooldown);
 
         canDash = true;
+    }
+
+    /// <summary>
+    /// 更新移动方向
+    /// </summary>
+    private void UpdateMoveDirection()
+    {
+        if(isDashing)
+        {
+            return;
+        }
+
+        moveDir = inputReader.MoveInput;
+
+        if(moveDir != Vector2.zero)
+        {
+            lastMoveDir = moveDir;
+        }
+    }
+
+    /// <summary>
+    /// 普通移动
+    /// </summary>
+    private void Move()
+    {
+        if(isDashing && !canDash)
+        {
+            return;
+        }
+
+        rb.velocity = moveSpeed * moveDir;
+    }
+
+    /// <summary>
+    /// 处理冲刺输入
+    /// </summary>
+    private void HandleDashInput()
+    {
+        if(inputReader.DashPressed && canDash)
+        {
+            StartCoroutine(Dash());
+        }
     }
 }
