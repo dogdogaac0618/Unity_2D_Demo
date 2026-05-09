@@ -88,7 +88,10 @@ public class PlayerAttack : MonoBehaviour
         Projectile projectile = projectileObj.GetComponent<Projectile>();
         if (projectile != null)
         {
-            projectile.Init(fireDir);
+            // 玩家发射的子弹：
+            // owner = 玩家自己
+            // targetTag = Enemy，表示只打敌人
+            projectile.Init(fireDir, transform, "Enemy");
         }
     }
 }

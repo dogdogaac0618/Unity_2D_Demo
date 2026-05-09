@@ -41,10 +41,10 @@ public class PlayerHpController : MonoBehaviour
         {
             StopCoroutine(delayCoroutine);
         }
-        delayCoroutine = StartCoroutine(UpdateDelayHpBar(previousWidth,currentHp));
+        delayCoroutine = StartCoroutine(UpdateDelayHpBar(previousWidth,currentHp,width));
     }
     //更新延迟血量
-    IEnumerator UpdateDelayHpBar(float previousWidth,int currentHp)
+    IEnumerator UpdateDelayHpBar(float previousWidth,int currentHp,float width)
     {
         //计时器
         float t = 0f;
@@ -56,7 +56,7 @@ public class PlayerHpController : MonoBehaviour
             t += Time.deltaTime;
             progress = Mathf.Clamp01(t / reduceDuration); // 将t归一化到0-1之间
             // 线性插值计算当前宽度
-            targetWidth = Mathf.Lerp(previousWidth, (float)currentHp, progress);
+            targetWidth = Mathf.Lerp(previousWidth, width, progress);
             rectDelayBar.sizeDelta = new Vector2(targetWidth, rectDelayBar.sizeDelta.y);
             yield return null;
         }

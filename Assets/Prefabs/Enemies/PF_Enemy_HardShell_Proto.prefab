@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6448037356146542552}
   m_Layer: 0
   m_Name: PF_Enemy_HardShell_Proto
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -130,7 +130,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHp: 10
-  currentHp: 10
   useInvincible: 1
   invincibleTime: 0.4
   flashOnHit: 1

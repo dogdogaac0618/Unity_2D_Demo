@@ -66,7 +66,7 @@ public class RoomClearFeedbackTester : MonoBehaviour
             Debug.LogWarning("RoomClearFeedbackTester 没有拿到 TMP_Text，无法显示清场提示。");
             return;
         }
-
+        feedbackText.gameObject.SetActive(true);
         // 把可见提示直接显示到屏幕上
         feedbackText.text = string.Format(messageFormat, roomId);
 

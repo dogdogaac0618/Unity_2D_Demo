@@ -3,26 +3,12 @@ using UnityEngine;
 
 /// <summary>
 /// RoomDoor
-/// 作用：
-/// 1. 控制门自己的显示 / 隐藏。
-/// 2. 控制门自己的触发开关。
-/// 3. 玩家进入后执行传送。
-/// 4. 按需要移动主相机。
-/// 5. 通过 targetRoomId + RoomManager 激活目标房间。
 ///
-/// 本次修改重点：
-/// - 彻底移除 nextRoomPoint 旧方案。
-/// - 门的传送落点现在必须通过 RoomManager 按 targetRoomId 查询。
-///
-/// 为什么现在可以这样收口：
-/// - 前一步你已经验证过：即使把 RoomExit_Test 的 Next Room Point 清空，
-///   从 Room_01 进入 Room_02 仍然正常。
-/// - 说明当前双房间原型已经不再依赖门自己手拖 nextRoomPoint。
-/// - 所以这一步就把旧兜底正式删除，避免后续继续保留重复配置入口。
-///
-/// 当前边界：
-/// - 相机仍然继续使用门上的手动 XY 坐标字段。
-/// - SecondRoomExit_Test 目前还没有正式接到第三房间，所以 targetRoomId 允许为空。
+/// 当前职责：
+/// 1. 控制门自己的显示 / 隐藏
+/// 2. 控制门自己的触发开关
+/// 3. 检测玩家是否进入门
+/// 4. 通知 RoomTransitionService 执行房间切换
 /// </summary>
 public class RoomDoor : MonoBehaviour
 {
@@ -52,12 +38,6 @@ public class RoomDoor : MonoBehaviour
     /// 防止玩家一次穿门时重复触发多次。
     /// </summary>
     private bool isUsed = false;
-
-    private void Reset()
-    {
-        exitTrigger = GetComponent<BoxCollider2D>();
-        exitRenderer = GetComponent<SpriteRenderer>();
-    }
 
     private void Awake()
     {
@@ -114,26 +94,16 @@ public class RoomDoor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isUnlocked)
+        if (!CanUseDoor(other))
         {
             return;
         }
-
-        if (isUsed)
-        {
-            return;
-        }
-
-        if (!other.CompareTag("Player"))
-        {
-            return;
-        }
+        
 
         isUsed = true;
 
-        TeleportPlayer(other);
-        MoveMainCameraIfNeeded();
-        ActivateTargetRoomIfNeeded();
+        RoomTransitionService.Instance.TryTransition(other, 
+            targetRoomId, moveMainCameraOnUse, nextRoomCameraPosition, name);
     }
 
     /// <summary>
@@ -247,18 +217,27 @@ public class RoomDoor : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
+    /// <summary>
+    /// 判断这次碰撞是否允许使用门
+    /// </summary>
+    private bool CanUseDoor(Collider2D other)
     {
-        if (exitTrigger == null)
+        if (!isUnlocked)
         {
-            exitTrigger = GetComponent<BoxCollider2D>();
+            return false;
         }
-
-        if (exitRenderer == null)
+        if (isUsed)
         {
-            exitRenderer = GetComponent<SpriteRenderer>();
+            return false;
         }
+        if(other == null)
+        {
+            return false;
+        }
+        if (other.CompareTag("Player"))
+        {
+            return true;
+        }
+        return false;
     }
-#endif
 }
