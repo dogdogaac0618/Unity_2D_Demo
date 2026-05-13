@@ -18,6 +18,8 @@
 /// </summary>
 public class Projectile : MonoBehaviour
 {
+    [Header("子弹数据")]
+    [SerializeField] private BulletData bulletData;
     [Header("子弹基础参数")]
     [SerializeField] private float speed = 10f;       // 子弹飞行速度
     [SerializeField] private float lifeTime = 2f;     // 子弹存在时间
@@ -26,6 +28,9 @@ public class Projectile : MonoBehaviour
     [Header("命中规则")]
     [SerializeField] private string targetTag = "Enemy";
 
+    private float Speed => bulletData != null ? bulletData.speed : speed;
+    private float LifeTime => bulletData != null ? bulletData.lifeTime : lifeTime;
+    private int Damage => bulletData != null ? bulletData.damage : damage;
     // 当前飞行方向
     private Vector2 moveDir = Vector2.right;
 
@@ -72,14 +77,14 @@ public class Projectile : MonoBehaviour
         // 设置初速度
         if (rb != null)
         {
-            rb.velocity = moveDir * speed;
+            rb.velocity = moveDir * Speed;
         }
 
         // 防止重复调用 Init 时叠加旧的 Invoke
         CancelInvoke();
 
         // 到时间自动销毁
-        Invoke(nameof(DestroySelf), lifeTime);
+        Invoke(nameof(DestroySelf), LifeTime);
     }
 
     /// <summary>
@@ -96,7 +101,7 @@ public class Projectile : MonoBehaviour
         // 维持速度，避免子弹被物理碰撞影响后变慢
         if (rb != null)
         {
-            rb.velocity = moveDir * speed;
+            rb.velocity = moveDir * Speed;
         }
     }
 
@@ -165,7 +170,7 @@ public class Projectile : MonoBehaviour
             return;
         }
 
-        damageable.TakeDamage(damage);
+        damageable.TakeDamage(Damage);
         DestroySelf();
     }
 
