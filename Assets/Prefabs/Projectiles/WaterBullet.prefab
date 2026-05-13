@@ -134,9 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc4bc1ce4f7e6e45a6c7a380c546bc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletData: {fileID: 11400000, guid: ce4aae4b34545694d91625ee3e0c650a, type: 2}
   speed: 65.14
   lifeTime: 2
   damage: 10
+  targetTag: Enemy
 --- !u!50 &1993350219513079647
 Rigidbody2D:
   serializedVersion: 4
