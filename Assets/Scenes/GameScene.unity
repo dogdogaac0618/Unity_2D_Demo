@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 181453106}
   m_Layer: 0
   m_Name: Enemy_HardShell_Proto (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2021,6 +2021,7 @@ GameObject:
   - component: {fileID: 741344423}
   - component: {fileID: 741344422}
   - component: {fileID: 741344421}
+  - component: {fileID: 741344424}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2102,6 +2103,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &741344424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 741344420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 960a21f690f10224fb37d54465ebd2e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetCamera: {fileID: 741344422}
 --- !u!1 &774053945
 GameObject:
   m_ObjectHideFlags: 0
@@ -2269,7 +2283,7 @@ GameObject:
   - component: {fileID: 927200996}
   m_Layer: 0
   m_Name: Enemy_HardShell_Proto (1)
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2518,6 +2532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1065754597}
   - component: {fileID: 1065754596}
+  - component: {fileID: 1065754598}
   m_Layer: 0
   m_Name: RoomManager
   m_TagString: Untagged
@@ -2563,6 +2578,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1065754598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1065754595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8186f4cd36516b47800f9290beb4e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1163409384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2902,7 +2929,7 @@ MonoBehaviour:
   DelayBar: {fileID: 350926892}
   maxHpRealWidth: 300
   delayTime: 0
-  reduceDuration: 5
+  reduceDuration: 0.5
 --- !u!1 &1445758790
 GameObject:
   m_ObjectHideFlags: 0
